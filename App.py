@@ -55,16 +55,17 @@ if (filterSelectBox == "None"):
     st.table(em.getDataFrame()) # tabel biasa
 else:
     targetFilterColumn = st.selectbox("Target Column",["NIM","Nilai"]) # pilihan kolom
-    filter = st.text_input("Filter Nilai") # input angka filter
+    filterValue = st.text_input("Filter Nilai") # input angka filter
 
-if (filter != ""):
-    if (filterSelectBox == ">"):
-        st.table(em.getDataFrame()[em.getDataFrame()[targetFilterColumn] > int(filter)])
-    elif (filterSelectBox == "<"):
-        st.table(em.getDataFrame()[em.getDataFrame()[targetFilterColumn] < int(filter)])
-    elif (filterSelectBox == "="):
-        st.table(em.getDataFrame()[em.getDataFrame()[targetFilterColumn] == int(filter)])
-    elif (filterSelectBox == "="):
-        st.table(em.getDataFrame()[em.getDataFrame()[targetFilterColumn] <= int(filter)])
-    elif (filterSelectBox == "="):
-        st.table(em.getDataFrame()[em.getDataFrame()[targetFilterColumn] >= int(filter)])
+    if (filterValue != ""):
+        df = em.getDataFrame()
+        if (filterSelectBox == ">"):
+            st.table(df[df[targetFilterColumn] > int(filterValue)])
+        elif (filterSelectBox == "<"):
+            st.table(df[df[targetFilterColumn] < int(filterValue)])
+        elif (filterSelectBox == "="):
+            st.table(df[df[targetFilterColumn] == int(filterValue)])
+        elif (filterSelectBox == "<="):
+            st.table(df[df[targetFilterColumn] <= int(filterValue)])
+        elif (filterSelectBox == ">="):
+            st.table(df[df[targetFilterColumn] >= int(filterValue)])

@@ -20,22 +20,36 @@ class excelManager:
         # clue cara insert row: df = pandas.concat([df, pandas.DataFrame([{"NIM":0,"Nama":"Udin","Nilai":1000}])], ignore_index=True)
         New_row = pandas.DataFrame([newData])
         self.__data = pandas.concat([self.__data, New_row], ignore_index=True)
-        if (saveChange): self.saveChange()
-        pass
+        if (saveChange):
+            self.saveChange()
     
     def deleteData(self, targetedNim:str,saveChange:bool=False):
         # kerjakan disini
         # clue cara delete row: df.drop(indexBaris, inplace=True); contoh: df.drop(0,inplace=True)
-        self.__data.drop(0, inplace=True)
-        if (saveChange): self.saveChange()
-        pass
+        # cari index baris dengan NIM yang sesuai
+        idx = self.__data.index[self.__data['NIM'] == targetedNim]
+        if len(idx) > 0:
+            self.__data.drop(idx, inplace=True)
+            self.__data.reset_index(drop=True, inplace=True)
+        if (saveChange):
+            self.saveChange()
     
     def editData(self, targetedNim:str, newData:dict,saveChange:bool=False) -> dict:
         # kerjakan disini
         # clue cara ganti value: df.at[indexBaris,namaKolom] = value; contoh: df.at[0,ID] = 1
         # self.__data.at[targetedNim, self.__data['NIM', 'Nama']] = newData
-        if (saveChange): self.saveChange()
-        pass
+        # cari index baris dengan NIM yang sesuai
+        idx = self.__data.index[self.__data['NIM'] == targetedNim]
+        if len(idx) > 0:
+            for col, val in newData.items():
+                if col in self.__data.columns:
+                    self.__data.at[idx[0], col] = val
+            if (saveChange):
+                self.saveChange()
+            return dict(self.__data.loc[idx[0]])
+        if (saveChange):
+            self.saveChange()
+        return None
     
                     
     def getData(self, colName:str, data:str) -> dict:
